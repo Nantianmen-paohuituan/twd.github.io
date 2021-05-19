@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>123456</title>
+</head>
+<body onload="startime()">
+    <div id ="text"></div><br>
+    <table id="table1">
+        <tr>
+            <td>免费实况天气接口</td>
+        </tr>
+       <tr>
+           <td>城市名称：</td>
+            <td><input type="text" id ="city"></td>
+            <td><input type="button" id="btn" value="查询"></td>
+       </tr>
+       <tr>
+        <td>更新时间: </td>
+        <td><input type="text" id ="update_time"></td>
+    </tr>
+    <tr>
+        <td>天气情况: </td>
+        <td><input type="text" id ="wea"></td>
+    </tr>
+    <tr>
+        <td>天气对应图标: </td>
+        <td><input type="text" id ="wea_img"></td>
+    </tr>
+    <tr>
+        <td>实时温度: </td>
+        <td><input type="text" id ="tem"></td>
+    </tr>
+    <tr>
+        <td>白天温度(高温): </td>
+        <td><input type="text" id ="tem_day"></td>
+    </tr>
+    <tr>
+        <td>白天温度(低温): </td>
+        <td><input type="text" id ="tem_night"></td>
+    </tr>
+    <tr>
+        <td>风向: </td>
+        <td><input type="text" id ="win"></td>
+    </tr>
+    <tr>
+        <td>风力等级: </td>
+        <td><input type="text" id ="win_speed"></td>
+    </tr>
+    <tr>
+        <td>风速: </td>
+        <td><input type="text" id ="win_meter"></td>
+    </tr>
+    <tr>
+        <td>空气质量: </td>
+        <td><input type="text" id ="air"></td>
+    </tr>
+    </table><br>
+    <table id="table2">
+        <tr>
+            <td>基金</td>
+        </tr>
+        <tr>
+            <td>基金代码</td>
+            <td><input type="text" id ="fundcode"></td>
+            <td><input type="button" id="btn1" value="查询"></td>
+        </tr>
+        <tr>
+            <td>基金名称</td>
+            <td><input type="text" id ="name"></td>
+        </tr>
+        <tr>
+            <td>昨日日期</td>
+            <td><input type="text" id ="jzrq"></td>
+        </tr>
+        <tr>
+            <td>昨日单位价格</td>
+            <td><input type="text" id ="dwjz"></td>
+        </tr>
+        <tr>
+            <td>今日估算值</td>
+            <td><input type="text" id ="gsz"></td>
+        </tr>
+        <tr>
+            <td>今日估算值涨幅</td>
+            <td><input type="text" id ="gszzl"></td>
+        </tr>
+        <tr>
+            <td>估算值时间</td>
+            <td><input type="text" id ="gztime"></td>
+        </tr>
+    </table>
+    <script  type="text/javascript"  src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+    <script type="text/javascript">   
+        function startime(){
+            var today;
+            today=new Date();
+            var h=today.getHours();
+            var m=today.getMinutes();
+            var s=today.getSeconds();
+            document.getElementById("text").innerHTML="当前时间为："+h+":"+m+":"+s;
+            var t = setTimeout(function(){ startime() }, 1000);
+        }
+        $(function(){
+            $("#btn").click(function(){
+               var city=$("#city").val();
+               var url="https://www.tianqiapi.com/free/day?appid=92232456&appsecret=vLWw4km9&city="+city;
+               alert(url);
+               $.ajax({
+                   url:url,
+                   dataType:"json",
+                   success: function (data) {
+                     $("#update_time").val(data.update_time);
+                     $("#wea").val(data.wea);
+                     $("#wea_img").val(data.wea_img);
+                     $("#tem").val(data.tem);
+                     $("#tem_day").val(data.tem_day);
+                     $("#tem_night").val(data.tem_night);
+                     $("#win").val(data.win);
+                     $("#win_speed").val(data.win_speed);
+                     $("#win_meter").val(data.win_meter);
+                     $("#air").val(data.air);
+                   }
+               })
+            });
+            $("#btn1").click(function(){
+                var fundcode=$("#fundcode").val();
+                var timestamp=new Date().getTime();
+                var url="http://fundgz.1234567.com.cn/js/"+fundcode+".js?rt="+timestamp;
+                alert(url);
+                $.ajax({
+                    type: "get",
+                    async: false,
+                   url:url,
+                   dataType:"jsonp",
+                   jsonp: "callback",
+                   jsonpCallback:"jsonpgz",
+                   success: function (data) {
+                    $("#name").val(data.name);
+                    $("#jzrq").val(data.jzrq);
+                    $("#dwjz").val(data.dwjz);
+                    $("#gsz").val(data.gsz);
+                    $("#gszzl").val(data.gszzl);
+                    $("#gztime").val(data.gztime);
+                   }
+                })
+            });
+        })
+    </script>
+</body>
+</html>
